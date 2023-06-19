@@ -1,5 +1,6 @@
 import cv2
 import time
+import glob
 from emailing import send_email
 
 video = cv2.VideoCapture(0)
@@ -7,10 +8,13 @@ time.sleep(1)
 
 first_frame = None
 status_list = []
+count = 1
+
 while True:
     # Set the camera
     status = 0
     check, frame = video.read()
+
     grey_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     grey_frame_gau = cv2.GaussianBlur(grey_frame, (21, 21), 0)
 
@@ -35,6 +39,9 @@ while True:
         rectangle = cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 3)
         if rectangle.any():
             status = 1
+            cv2.imwrite(f"images/{count}.png", frame)
+            count += 1
+            all_images = glob.glob("images/*.png")
 
     status_list.append(status)
     status_list = status_list[-2:]
