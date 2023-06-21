@@ -42,6 +42,8 @@ while True:
             cv2.imwrite(f"images/{count}.png", frame)
             count += 1
             all_images = glob.glob("images/*.png")
+            index = int(len(all_images)/2)
+            image_object = all_images[index]
 
     status_list.append(status)
     status_list = status_list[-2:]
