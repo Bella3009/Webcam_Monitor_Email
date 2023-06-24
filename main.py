@@ -10,6 +10,8 @@ first_frame = None
 status_list = []
 count = 1
 
+#Remove
+
 while True:
     # Set the camera
     status = 0
