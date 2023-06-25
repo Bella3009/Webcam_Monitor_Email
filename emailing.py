@@ -5,6 +5,7 @@ from email.message import EmailMessage
 
 
 def send_email(image):
+    print("Send_Email Function started")
     email_msg = EmailMessage()
     email_msg["Subject"] = "New customer entered the shop."
     email_msg.set_content("Hello, there is a new customer.")
@@ -25,6 +26,7 @@ def send_email(image):
     gmail.login(username, password)
     gmail.sendmail(username, username, email_msg.as_string())
 
+    print("Send_Email Function ended")
 
 if __name__ == "__main__":
     send_email(image="images/1.png")

@@ -3,6 +3,7 @@ import time
 import glob
 import os
 from emailing import send_email
+from threading import Thread
 
 video = cv2.VideoCapture(0)
 time.sleep(1)
@@ -14,9 +15,11 @@ count = 1
 
 # Remove images from folder
 def clean_folder():
+    print("Clean Function started")
     images = glob.glob("images/*.png")
     for image in images:
         os.remove(image)
+    print("Clean Function ended")
 
 
 while True:
@@ -57,9 +60,14 @@ while True:
     status_list.append(status)
     status_list = status_list[-2:]
 
+    # Since functions are taking long to be executed affecting the video is better using threading
     if status_list[0] == 1 and status_list[1] == 0:
-        send_email(image_object)
-        clean_folder()
+        email_thread = Thread(target=send_email, args=(image_object, ))
+        email_thread.daemon = True
+        clean_thread = Thread(target=clean_folder)
+        clean_thread.daemon = True
+
+        email_thread.start()
 
     cv2.imshow("My Video", dil_frame)
     cv2.imshow("Video", frame)
@@ -69,3 +77,5 @@ while True:
         break
 
 video.release()
+
+clean_thread.start()
